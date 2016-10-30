@@ -17,43 +17,91 @@ public class PickBoxes {
 
 	private ArrayList<Integer> boxes;
 	private int[][] matrix;
+	private Scanner scanner;
+	private List<String> lines;
+
+	/**
+	 * Constructor that initializes variables needed in class.
+	 */
+	public PickBoxes() {
+		this.boxes = new ArrayList<Integer>();
+		this.scanner = new Scanner(System.in);
+		this.lines = new ArrayList<String>();
+	}
 
 	/**
 	 * Reads in the file from the user and parses it properly for this class.
 	 */
 	public void readInFile() {
 
-		Scanner scanner = new Scanner(System.in);
 		System.out.println("Input name of input file");
-		String inputFile = scanner.next();
-		scanner.close();
-
-		List<String> lines = null;
-		String[] singleLine = null;
-		this.boxes = new ArrayList<Integer>();
+		String inputFile = this.scanner.next();
+		this.scanner.close();
 
 		if (inputFile == null) {
 			throw new IllegalArgumentException("File cannot be null");
 		}
 
 		try {
-			lines = Files.readAllLines(Paths.get(inputFile), StandardCharsets.UTF_8);
-		} catch (IOException e) {
 
-			e.printStackTrace();
+			this.lines = Files.readAllLines(Paths.get(inputFile), StandardCharsets.UTF_8);
+			this.splitUpLines();
+
+		} catch (IOException exception) {
+			exception.printStackTrace();
+			System.out.println("There was a problem reading your file. Error Message: " + exception.getMessage());
 		}
 
-		if (lines != null) {
-			for (String line : lines) {
-				singleLine = line.split(",");
-			}
+	}
 
-			for (String number : singleLine) {
-				this.boxes.add(Integer.parseInt(number));
-			}
+	/**
+	 * Splits the line from the file based on the comma delimiter
+	 */
+	private void splitUpLines() {
+
+		String[] singleLine = null;
+
+		for (String line : this.lines) {
+			singleLine = line.split(",");
+			this.parseLineToInt(singleLine);
 
 		}
+	}
 
+	/**
+	 * Parse each String representation of the number and puts it into the
+	 * arrayList.
+	 * 
+	 * @param singleLine
+	 *            The string array that contains each number
+	 */
+	private void parseLineToInt(String[] singleLine) {
+
+		if (singleLine == null) {
+			throw new IllegalArgumentException("Line cannot be null");
+		}
+
+		for (String number : singleLine) {
+
+			this.tryParseInteger(number);
+		}
+	}
+
+	/**
+	 * Tries to parse the integer from the string but handles the exception if
+	 * thrown.
+	 * 
+	 * @param number
+	 *            The String representation of the number.
+	 */
+	private void tryParseInteger(String number) {
+		try {
+
+			this.boxes.add(Integer.parseInt(number));
+		} catch (NumberFormatException exception) {
+			exception.printStackTrace();
+			System.out.println("Invalid number format. " + exception.getMessage());
+		}
 	}
 
 	/**
@@ -76,6 +124,12 @@ public class PickBoxes {
 		return this.matrix[0][this.boxes.size() - 1];
 	}
 
+	/**
+	 * Initializes all cells of row I and column J with 0.
+	 * 
+	 * @param length
+	 *            The length of the chain
+	 */
 	private void initializeIJCell(int length) {
 		for (int row = 0; row < this.boxes.size() - length; row++) {
 			int col = row + length;
@@ -84,6 +138,14 @@ public class PickBoxes {
 		}
 	}
 
+	/**
+	 * Calculates the kValue for the current box
+	 * 
+	 * @param row
+	 *            The row in the matrix
+	 * @param column
+	 *            The column in the matrix
+	 */
 	private void calculateKValue(int row, int column) {
 
 		for (int kIndex = row + 1; kIndex < column; kIndex++) {
@@ -97,6 +159,9 @@ public class PickBoxes {
 		}
 	}
 
+	/**
+	 * Prints matrix to the screen.
+	 */
 	private void printMatrix() {
 		System.out.println("Matrix = ");
 		for (int row = 0; row < this.matrix.length; row++) {
@@ -118,9 +183,7 @@ public class PickBoxes {
 	public static void main(String[] args) {
 
 		PickBoxes picker = new PickBoxes();
-
 		picker.readInFile();
-
 		int result = picker.findBiggestPrize();
 
 		System.out.println("Largest prize value is: " + result);
