@@ -30,9 +30,25 @@ public class PickBoxes {
 	}
 
 	/**
+	 * Runs the program.
+	 */
+	public void runProgram() {
+		boolean success = this.readInFile();
+
+		if (success) {
+			int result = this.findBiggestPrize();
+			System.out.println("Largest prize value is: " + result);
+
+		}
+
+	}
+
+	/**
 	 * Reads in the file from the user and parses it properly for this class.
 	 */
-	public void readInFile() {
+	public boolean readInFile() {
+
+		boolean success = false;
 
 		System.out.println("Input name of input file");
 		String inputFile = this.scanner.next();
@@ -46,11 +62,14 @@ public class PickBoxes {
 
 			this.lines = Files.readAllLines(Paths.get(inputFile), StandardCharsets.UTF_8);
 			this.splitUpLines();
+			success = true;
 
 		} catch (IOException exception) {
-			exception.printStackTrace();
-			System.out.println("There was a problem reading your file. Error Message: " + exception.getMessage());
+			System.out.println("There was a problem reading your file");
+
 		}
+
+		return success;
 
 	}
 
@@ -183,10 +202,7 @@ public class PickBoxes {
 	public static void main(String[] args) {
 
 		PickBoxes picker = new PickBoxes();
-		picker.readInFile();
-		int result = picker.findBiggestPrize();
-
-		System.out.println("Largest prize value is: " + result);
+		picker.runProgram();
 
 	}
 
