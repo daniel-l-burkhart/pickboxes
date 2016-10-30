@@ -45,6 +45,8 @@ public class PickBoxes {
 
 	/**
 	 * Reads in the file from the user and parses it properly for this class.
+	 * 
+	 * @return True if file read was successful, false otherwise.
 	 */
 	public boolean readInFile() {
 
