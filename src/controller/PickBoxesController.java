@@ -55,4 +55,13 @@ public class PickBoxesController {
 		return this.result;
 	}
 
+	/**
+	 * Gets the matrix from the model
+	 * 
+	 * @return A 2D array representing the matrix.
+	 */
+	public int[][] getMatrix() {
+		return this.picker.getMatrix();
+	}
+
 }

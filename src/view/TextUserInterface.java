@@ -16,6 +16,7 @@ public class TextUserInterface {
 	private Scanner scanner;
 	private String inputFile;
 	private int largestPrize;
+	private int[][] matrix;
 
 	/**
 	 * Constructor that initializes necessary variables.
@@ -35,7 +36,8 @@ public class TextUserInterface {
 
 		this.controller.readFile(inputFile);
 		this.largestPrize = controller.findLargestPrize();
-
+		this.printMatrix();
+		
 		System.out.println("Largest prize value is: " + this.largestPrize);
 	}
 
@@ -46,6 +48,25 @@ public class TextUserInterface {
 		System.out.println("Input name of input file");
 		this.inputFile = this.scanner.next();
 		this.scanner.close();
+	}
+	
+	/**
+	 * Prints matrix to the screen.
+	 */
+	private void printMatrix() {
+		
+		this.matrix = this.controller.getMatrix();
+
+		System.out.println("Matrix:");
+
+		for (int row = 0; row < this.matrix.length; row++) {
+			for (int column = 0; column < this.matrix.length; column++) {
+				System.out.print(this.matrix[row][column] + "\t");
+			}
+			System.out.println();
+		}
+
+		System.out.println();
 	}
 
 	/**

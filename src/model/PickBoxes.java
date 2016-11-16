@@ -52,8 +52,6 @@ public class PickBoxes {
 			this.initializeIJCell();
 		}
 
-		this.printMatrix();
-
 		return this.matrix[0][this.boxes.size() - 1];
 	}
 
@@ -96,20 +94,12 @@ public class PickBoxes {
 	}
 
 	/**
-	 * Prints matrix to the screen.
+	 * Gets the resulting matrix
+	 * 
+	 * @return A 2D array representing the matrix.
 	 */
-	private void printMatrix() {
-
-		System.out.println("Matrix:");
-
-		for (int row = 0; row < this.matrix.length; row++) {
-			for (int column = 0; column < this.matrix.length; column++) {
-				System.out.print(this.matrix[row][column] + "\t");
-			}
-			System.out.println();
-		}
-
-		System.out.println();
+	public int[][] getMatrix() {
+		return this.matrix;
 	}
 
 }
